@@ -44,20 +44,11 @@ module.exports = {
     teams: async () => {
       const teams = await getTeams()
 
-      return teams.map(async t => {
-        try {
-          const id = t._links.self.href.split('/teams/')[1]
-          const players = await getPlayers(id)
-          const fixtures = await getGames(id)
-          t.id = id
-          t.flag = t.crestUrl
-          t.players = players.data.players
-          t.games = fixtures.data.fixtures
-        } catch (e) {
-          console.log(e)
-        }
-        return t
-      })
+      return teams.map(team => ({
+        ...team,
+        id: team._links.self.href.split('/teams/')[1],
+        flag: team.crestUrl
+      }))
     }
   }
 }
