@@ -2,8 +2,8 @@ module.exports = `
   type Query {
     info: Info
     teams(name: String): [Team]!
-    players(teamID: Int): [Player]!
-    games(teamID: Int): [Fixture]!
+    players(teamID: Int!): [Player]!
+    games(teamID: Int!): [Fixture]!
   }
 
 
