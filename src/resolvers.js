@@ -20,8 +20,8 @@ const getGames = async teamID => {
     return cache.get(cacheKey)
   } else {
     const response = await network.getGames(teamID)
-    cache.set(cacheKey, response.data.games)
-    return response.data.games
+    cache.set(cacheKey, response.data.fixtures)
+    return response.data.fixtures
   }
 }
 
