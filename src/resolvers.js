@@ -1,4 +1,41 @@
-const { getPlayers, getGames, getTeams } = require('../utils/requests')
+const network = require('../utils/requests')
+const cache = require('../utils/cache')
+
+const getPlayers = async teamID => {
+  const cacheKey = `players-${teamID}`
+
+  if (cache.contains(cacheKey)) {
+    return cache.get(cacheKey)
+  } else {
+    const players = await network.getPlayers(teamID)
+    cache.set(cacheKey, players)
+    return players
+  }
+}
+
+const getGames = async teamID => {
+  const cacheKey = `games-${teamID}`
+
+  if (cache.contains(cacheKey)) {
+    return cache.get(cacheKey)
+  } else {
+    const games = await network.getGames(teamID)
+    cache.set(cacheKey, games)
+    return games
+  }
+}
+
+const getTeams = async () => {
+  const cacheKey = 'teams'
+
+  if (cache.contains(cacheKey)) {
+    return cache.get(cacheKey)
+  } else {
+    const teams = await network.getTeams()
+    cache.set(cacheKey, teams)
+    return teams
+  }
+}
 
 module.exports = {
   Query: {
@@ -13,7 +50,8 @@ module.exports = {
       return fixtures.data.fixtures
     },
     teams: async () => {
-      const teams = await await getTeams()
+      const teams = await getTeams()
+
       return teams.data.teams.map(async t => {
         try {
           const id = t._links.self.href.split('/teams/')[1]
