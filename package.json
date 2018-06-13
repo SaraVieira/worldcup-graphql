@@ -1,0 +1,30 @@
+{
+  "name": "worldcup-graphql",
+  "version": "1.0.0",
+  "description": "A graphQL API for the world cup",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run lint",
+    "start": "node .",
+    "dev": "nodemon ./index.js",
+    "posttest": "npm run format",
+    "format": "prettier --write '**/*.{js,css,md}'",
+    "lint": "eslint . --cache --fix"
+  },
+  "author": "Sara Vieira",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "nodemon": "^1.17.5",
+    "prettier": "^1.13.5"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "graphql-yoga": "^1.14.8"
+  }
+}
