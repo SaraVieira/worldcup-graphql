@@ -7,9 +7,9 @@ const getPlayers = async teamID => {
   if (cache.contains(cacheKey)) {
     return cache.get(cacheKey)
   } else {
-    const players = await network.getPlayers(teamID)
-    cache.set(cacheKey, players)
-    return players
+    const response = await network.getPlayers(teamID)
+    cache.set(cacheKey, response.data.players)
+    return response.data.players
   }
 }
 
@@ -19,9 +19,9 @@ const getGames = async teamID => {
   if (cache.contains(cacheKey)) {
     return cache.get(cacheKey)
   } else {
-    const games = await network.getGames(teamID)
-    cache.set(cacheKey, games)
-    return games
+    const response = await network.getGames(teamID)
+    cache.set(cacheKey, response.data.games)
+    return response.data.games
   }
 }
 
@@ -31,28 +31,20 @@ const getTeams = async () => {
   if (cache.contains(cacheKey)) {
     return cache.get(cacheKey)
   } else {
-    const teams = await network.getTeams()
-    cache.set(cacheKey, teams)
-    return teams
+    const response = await network.getTeams()
+    cache.set(cacheKey, response.data.teams)
+    return response.data.teams
   }
 }
 
 module.exports = {
   Query: {
-    players: async (_, { teamID }) => {
-      const players = await getPlayers(teamID)
-
-      return players.data.players
-    },
-    games: async (_, { teamID }) => {
-      const fixtures = await getGames(teamID)
-
-      return fixtures.data.fixtures
-    },
+    players: (_, { teamID }) => getPlayers(teamID),
+    games: (_, { teamID }) => getGames(teamID),
     teams: async () => {
       const teams = await getTeams()
 
-      return teams.data.teams.map(async t => {
+      return teams.map(async t => {
         try {
           const id = t._links.self.href.split('/teams/')[1]
           const players = await getPlayers(id)
