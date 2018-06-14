@@ -50,5 +50,7 @@ module.exports = `
     shortName: String
     squadMarketValue: String
     flag: String
+    players: [Player] @deprecated
+    games: [Fixture] @deprecated
   }
 `
