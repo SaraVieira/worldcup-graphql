@@ -1,5 +1,6 @@
 const network = require('../utils/requests')
 const cache = require('../utils/cache')
+const { pipe } = require('../utils/functional')
 
 const getPlayers = async teamID => {
   const cacheKey = `players-${teamID}`
@@ -37,18 +38,24 @@ const getTeams = async () => {
   }
 }
 
+const filterTeams = name => teams =>
+  teams.filter(team => (name ? team.name === name : true))
+
+const transformTeams = teams =>
+  teams.map(team => ({
+    ...team,
+    id: team._links.self.href.split('/teams/')[1],
+    flag: team.crestUrl
+  }))
+
 module.exports = {
   Query: {
     players: (_, { teamID }) => getPlayers(teamID),
     games: (_, { teamID }) => getGames(teamID),
-    teams: async () => {
-      const teams = await getTeams()
-
-      return teams.map(team => ({
-        ...team,
-        id: team._links.self.href.split('/teams/')[1],
-        flag: team.crestUrl
-      }))
-    }
+    teams: async (_, { name }) =>
+      pipe(
+        filterTeams(name),
+        transformTeams
+      )(await getTeams())
   }
 }
