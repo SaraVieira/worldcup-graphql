@@ -12,6 +12,6 @@ export APIKEY=somekeydata
 
 ## Authors and license
 
-[Sara Vieira](https://iamsaravieira.com) and [contributors](https://github.com/https://github.com/SaraVieira/worldcup-graphql/graphs/contributors).
+[Sara Vieira](https://iamsaravieira.com) and [contributors](https://github.com/SaraVieira/worldcup-graphql/graphs/contributors).
 
 MIT License, see the included [License.md](License.md) file.
