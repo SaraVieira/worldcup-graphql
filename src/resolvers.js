@@ -2,6 +2,10 @@ const network = require('../utils/requests')
 const cache = require('../utils/cache')
 const { pipe } = require('../utils/functional')
 
+/*
+ *  Fetches players from cache if resource exists,
+ *  otherwise from network 
+ */
 const getPlayers = async teamID => {
   const cacheKey = `players-${teamID}`
 
@@ -14,6 +18,10 @@ const getPlayers = async teamID => {
   }
 }
 
+/*
+ *  Fetches games from cache if resource exists,
+ *  otherwise from network 
+ */
 const getGames = async teamID => {
   const cacheKey = `games-${teamID}`
 
@@ -26,6 +34,10 @@ const getGames = async teamID => {
   }
 }
 
+/*
+ *  Fetches teams from cache if resource exists,
+ *  otherwise from network 
+ */
 const getTeams = async () => {
   const cacheKey = 'teams'
 
@@ -38,9 +50,11 @@ const getTeams = async () => {
   }
 }
 
+/* Filters teams by name */
 const filterTeams = name => teams =>
   teams.filter(team => (name ? team.name === name : true))
 
+/* Maps teams to a schema-compliant structure */
 const transformTeams = teams =>
   teams.map(team => ({
     ...team,
