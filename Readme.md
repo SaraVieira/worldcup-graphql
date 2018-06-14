@@ -4,6 +4,10 @@ A GraphQL endpoint for the world cup data because why not ?
 
 https://worldcup-graphql.now.sh/
 
+Get your free APIKEY on [football-data](https://api.football-data.org/client/register) and use it as a environmnet variable, if not you will only be able to make 50 requests per day.
+```
+export APIKEY=somekeydata
+```
 ...
 
 ## Authors and license
