@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const key = 'd1ca7688bf714bc396a7f69913e88292'
+const key = process.env.APIKEY || ""
 
 const get = axios.create({
   baseURL: 'http://api.football-data.org/v1/',
