@@ -1,6 +1,7 @@
 const network = require('../utils/requests')
 const cache = require('../utils/cache')
 const { pipe } = require('../utils/functional')
+const ROUNDS = require('./rounds')
 
 /*
  *  Fetches players from cache if resource exists,
@@ -35,6 +36,22 @@ const getGames = async teamID => {
 }
 
 /*
+ *  Fetches all fixtures from cache if resource exists,
+ *  otherwise from network 
+ */
+const getFixtures = async () => {
+  const cacheKey = `fixtures`
+
+  if (cache.contains(cacheKey)) {
+    return cache.get(cacheKey)
+  } else {
+    const response = await network.getFixtures()
+    cache.set(cacheKey, response.data.fixtures)
+    return response.data.fixtures
+  }
+}
+
+/*
  *  Fetches teams from cache if resource exists,
  *  otherwise from network 
  */
@@ -62,10 +79,18 @@ const transformTeams = teams =>
     flag: team.crestUrl
   }))
 
+/* Map fixtures to schema-compliant structure */
+const transformFixtures = fixtures =>
+  fixtures.map(fixture => ({
+    ...fixture,
+    round: ROUNDS[fixture.matchday]
+  }))
+
 module.exports = {
   Query: {
     players: (_, { teamID }) => getPlayers(teamID),
-    games: (_, { teamID }) => getGames(teamID),
+    games: async (_, { teamID }) => pipe(transformFixtures)(await getGames(teamID)),
+    fixtures: async () => pipe(transformFixtures)(await getFixtures()),
     teams: async (_, { name }) =>
       pipe(
         filterTeams(name),

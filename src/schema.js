@@ -4,6 +4,7 @@ module.exports = `
     teams(name: String): [Team]!
     players(teamID: Int!): [Player]!
     games(teamID: Int!): [Fixture]!
+    fixtures: [Fixture]!
   }
 
 
@@ -41,6 +42,7 @@ module.exports = `
     awayTeamName: String,
     result: Result
     odds: String
+    round: String
   }
 
   type Team {
